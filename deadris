@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <Windows.h>
 
 int i;
 int map[10][21] = {0};
@@ -8,6 +9,8 @@ int horizontal = 10, vertical = 20;
 int tetblX [4];
 int tetblY[4];
 int blockcheck;
+int movepoint = 0;
+int turncheck = 0;
 
 void mapf();
 int randomf();
@@ -20,10 +23,10 @@ int movechecker();
 void dodown();
 void doleft();
 void doright();
-/*
-void dotrunR();
-void dotrunL();
-*/
+
+void doturnR();
+void doturnL();
+
 void main()
 {
 	mapf();
@@ -39,18 +42,18 @@ choice:
 	case 1:
 		doleft();
 		goto choice;
-	case 2:
+	case 2:	
 		dodown();
 		break;
 	case 3:
 		doright();
 		goto choice;
 	case 4:
-		//doturnL();
-		break;
+		doturnL();
+		goto choice;
 	case 5:
-		//doturnR();
-		break;
+		doturnR();
+		goto choice;
 	}
 	goto pointstart;
 	//줄 클리어 시키고
@@ -62,6 +65,7 @@ choice:
 //맵 함수
 void mapf()
 {
+	system("cls");
 	for (vertical = 0; vertical < 20; vertical++)
 	{
 		for (horizontal = 0; horizontal < 10; horizontal++)
@@ -96,11 +100,11 @@ int randomf()
 	
 }
 
-void blockchecker()
+void blockchecker()//회전값도 넣어야 한다
 {
 	switch(blockcheck)
 	{
-		case 0:
+		case 0: 
 			tetblX[0] = 0;
 			tetblX[1] = 1;
 			tetblX[2] = 0;
@@ -111,84 +115,274 @@ void blockchecker()
 			tetblY[2] = 1;
 			tetblY[3] = 1;
 			break;
+
 		case 1:
-			tetblX[0] = 0;
-			tetblX[1] = 1;
-			tetblX[2] = 2;
-			tetblX[3] = 3;
+			if (turncheck % 2 == 0)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 1;
+				tetblX[2] = 2;
+				tetblX[3] = 3;
 
-			tetblY[0] = 0;
-			tetblY[1] = 0;
-			tetblY[2] = 0;
-			tetblY[3] = 0;
-			break;
+				tetblY[0] = 0;
+				tetblY[1] = 0;
+				tetblY[2] = 0;
+				tetblY[3] = 0;
+				break;
+			}
+			else if (turncheck % 2 == 1)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 0;
+				tetblX[2] = 0;
+				tetblX[3] = 0;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 2;
+				tetblY[3] = 3;
+				break;
+			}
+
+			
 		case 2:
-			tetblX[0] = 0;
-			tetblX[1] = 1;
-			tetblX[2] = 2;
-			tetblX[3] = 0;
+			if (turncheck % 4 == 0)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 1;
+				tetblX[2] = 2;
+				tetblX[3] = 0;
 
-			tetblY[0] = 0;
-			tetblY[1] = 0;
-			tetblY[2] = 0;
-			tetblY[3] = 1;
-			break;
+				tetblY[0] = 0;
+				tetblY[1] = 0;
+				tetblY[2] = 0;
+				tetblY[3] = 1;
+				break;
+			}
+			else if (turncheck % 4 == 1)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 1;
+				tetblX[2] = 1;
+				tetblX[3] = 1;
+
+				tetblY[0] = 0;
+				tetblY[1] = 0;
+				tetblY[2] = 1;
+				tetblY[3] = 2;
+				break;
+			}
+			else if (turncheck % 4 == 2)
+			{
+				tetblX[0] = 2;
+				tetblX[1] = 0;
+				tetblX[2] = 1;
+				tetblX[3] = 2;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 1;
+				tetblY[3] = 1;
+				break;
+			}
+			else if (turncheck % 4 == 3)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 0;
+				tetblX[2] = 0;
+				tetblX[3] = 1;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 2;
+				tetblY[3] = 2;
+				break;
+			}
+
 		case 3:
-			tetblX[0] = 0;
-			tetblX[1] = 1;
-			tetblX[2] = 2;
-			tetblX[3] = 2;
+			if (turncheck % 4 == 0)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 1;
+				tetblX[2] = 2;
+				tetblX[3] = 2;
 
-			tetblY[0] = 0;
-			tetblY[1] = 0;
-			tetblY[2] = 0;
-			tetblY[3] = 1;
-			break;
+				tetblY[0] = 0;
+				tetblY[1] = 0;
+				tetblY[2] = 0;
+				tetblY[3] = 1;
+				break;
+			}
+			else if (turncheck % 4 == 1)
+			{
+				tetblX[0] = 1;
+				tetblX[1] = 1;
+				tetblX[2] = 0;
+				tetblX[3] = 1;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 2;
+				tetblY[3] = 2;
+				break;
+			}
+			else if (turncheck % 4 == 2)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 0;
+				tetblX[2] = 1;
+				tetblX[3] = 2;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 1;
+				tetblY[3] = 1;
+				break;
+			}
+			else if (turncheck % 4 == 3)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 1;
+				tetblX[2] = 0;
+				tetblX[3] = 0;
+
+				tetblY[0] = 0;
+				tetblY[1] = 0;
+				tetblY[2] = 1;
+				tetblY[3] = 2;
+				break;
+			}
+
 		case 4:
-			tetblX[0] = 0;
-			tetblX[1] = 1;
-			tetblX[2] = 1;
-			tetblX[3] = 2;
+			if (turncheck % 4 == 0)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 1;
+				tetblX[2] = 1;
+				tetblX[3] = 2;
 
-			tetblY[0] = 0;
-			tetblY[1] = 0;
-			tetblY[2] = 1;
-			tetblY[3] = 1;
-			break;
+				tetblY[0] = 0;
+				tetblY[1] = 0;
+				tetblY[2] = 1;
+				tetblY[3] = 1;
+				break;
+			}
+			else if (turncheck % 4 == 1)
+			{
+				tetblX[0] = 1;
+				tetblX[1] = 0;
+				tetblX[2] = 1;
+				tetblX[3] = 0;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 1;
+				tetblY[3] = 2;
+				break;
+			}
 		case 5:
-			tetblX[0] = 1;
-			tetblX[1] = 2;
-			tetblX[2] = 0;
-			tetblX[3] = 1;
+			if (turncheck % 2 == 0)
+			{
+				tetblX[0] = 1;
+				tetblX[1] = 2;
+				tetblX[2] = 0;
+				tetblX[3] = 1;
 
-			tetblY[0] = 0;
-			tetblY[1] = 0;
-			tetblY[2] = 1;
-			tetblY[3] = 1;
-			break;
+				tetblY[0] = 0;
+				tetblY[1] = 0;
+				tetblY[2] = 1;
+				tetblY[3] = 1;
+				break;
+			}
+			else if (turncheck % 2 == 1)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 0;
+				tetblX[2] = 1;
+				tetblX[3] = 1;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 1;
+				tetblY[3] = 2;
+				break;
+			}
 		case 6:
-			tetblX[0] = 0;
-			tetblX[1] = 1;
-			tetblX[2] = 2;
-			tetblX[3] = 1;
+			if (turncheck % 4 == 0)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 1;
+				tetblX[2] = 2;
+				tetblX[3] = 1;
 
-			tetblY[0] = 0;
-			tetblY[1] = 0;
-			tetblY[2] = 0;
-			tetblY[3] = 1;
-			break;
+				tetblY[0] = 0;
+				tetblY[1] = 0;
+				tetblY[2] = 0;
+				tetblY[3] = 1;
+				break;
+			}
+			else if (turncheck % 4 == 1)
+			{
+				tetblX[0] = 1;
+				tetblX[1] = 0;
+				tetblX[2] = 1;
+				tetblX[3] = 1;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 1;
+				tetblY[3] = 2;
+				break;
+			}
+			else if (turncheck % 4 == 2)
+			{
+				tetblX[0] = 1;
+				tetblX[1] = 0;
+				tetblX[2] = 1;
+				tetblX[3] = 2;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 1;
+				tetblY[3] = 1;
+				break;
+			}
+			else if (turncheck % 4 == 3)
+			{
+				tetblX[0] = 0;
+				tetblX[1] = 0;
+				tetblX[2] = 1;
+				tetblX[3] = 0;
+
+				tetblY[0] = 0;
+				tetblY[1] = 1;
+				tetblY[2] = 1;
+				tetblY[3] = 2;
+				break;
+			}
 	}
-
+	if ((tetblX[0] + movepoint > 9) || (tetblX[1] + movepoint > 9) || (tetblX[2] + movepoint > 9) || (tetblX[3] + movepoint > 9))
+	{
+		movepoint--;
+		if ((tetblX[0] + movepoint > 9) || (tetblX[1] + movepoint > 9) || (tetblX[2] + movepoint > 9) || (tetblX[3] + movepoint > 9))
+		{
+			movepoint--;
+		}
+		if ((tetblX[0] + movepoint > 9) || (tetblX[1] + movepoint > 9) || (tetblX[2] + movepoint > 9) || (tetblX[3] + movepoint > 9))
+		{
+			movepoint--;
+		}
+	}
 }
 
 void mapchanger()
 {
-	if ((map[tetblX[0]][tetblY[0]] == 0) && (map[tetblX[1]][tetblY[1]] == 0) && (map[tetblX[2]][tetblY[2]] == 0) && (map[tetblX[3]][tetblY[3]] == 0))
+	if ((map[tetblX[0] + movepoint][tetblY[0]] == 0) && (map[tetblX[1] + movepoint][tetblY[1]] == 0) && (map[tetblX[2] + movepoint][tetblY[2]] == 0) && (map[tetblX[3] + movepoint][tetblY[3]] == 0))
 	{
-		map[tetblX[0]][tetblY[0]] = 2;
-		map[tetblX[1]][tetblY[1]] = 2;
-		map[tetblX[2]][tetblY[2]] = 2;
-		map[tetblX[3]][tetblY[3]] = 2;
+		map[tetblX[0] + movepoint][tetblY[0]] = 2;
+		map[tetblX[1] + movepoint][tetblY[1]] = 2;
+		map[tetblX[2] + movepoint][tetblY[2]] = 2;
+		map[tetblX[3] + movepoint][tetblY[3]] = 2;
 	}
 }
 
@@ -252,7 +446,7 @@ int movechecker()
 void dodown()
 {
 	downpoint:
-	if ((map[tetblX[1]][tetblY[1] + 1] != 1)&& (map[tetblX[2]][tetblY[2] + 1] != 1)&& (map[tetblX[3]][tetblY[3] + 1] != 1)&& (map[tetblX[0]][tetblY[0] + 1] != 1) && (tetblY[0]<19) && (tetblY[1] < 19) && (tetblY[2] < 19) && (tetblY[3] < 19))
+	if ((map[tetblX[1] + movepoint][tetblY[1] + 1] != 1) && (map[tetblX[2] + movepoint][tetblY[2] + 1] != 1) && (map[tetblX[3] + movepoint][tetblY[3] + 1] != 1) && (map[tetblX[0] + movepoint][tetblY[0] + 1] != 1) && (tetblY[0] < 19) && (tetblY[1] < 19) && (tetblY[2] < 19) && (tetblY[3] < 19))
 	{
 		for (i = 0; i < 4; i++)
 		{
@@ -274,19 +468,17 @@ void dodown()
 				}
 			}
 		}
-		mapf();
+		movepoint = 0;
+		turncheck = 0;
 	}
 }
 
 void doleft()
 {
-	if ((tetblX[0] > 0) && (tetblX[1] > 0) && (tetblX[2] > 0) && (tetblX[3] > 0))
+	if (movepoint > 0)
 	{
 		mapcleaner();
-		for (i = 0; i < 4; i++)
-		{
-			tetblX[i]--;
-		}
+		movepoint--;
 		mapchanger();
 		mapf();
 	}
@@ -295,13 +487,10 @@ void doleft()
 
 void doright()
 {
-	if ((tetblX[0] < 9) && (tetblX[1] < 9) && (tetblX[2] < 9) && (tetblX[3] < 9))
+	if ((tetblX[0] + movepoint < 9) && (tetblX[1] + movepoint < 9) && (tetblX[2] + movepoint < 9) && (tetblX[3] + movepoint < 9))
 	{
 		mapcleaner();
-		for (i = 0; i < 4; i++)
-		{
-			tetblX[i]++;
-		}
+		movepoint++;
 		mapchanger();
 		mapf();
 	}
@@ -309,15 +498,23 @@ void doright()
 
 
 
-//회전 너무 머리 아프네
-/*
+//회전
+
 void doturnL()
 {
-
+	mapcleaner();
+	turncheck += 3;
+	blockchecker();
+	mapchanger();
+	mapf();
 }
 
-void dotrunR()
+void doturnR()
 {
-
+	mapcleaner();
+	turncheck += 1;
+	blockchecker();
+	mapchanger();
+	mapf();
 }
-*/
+
