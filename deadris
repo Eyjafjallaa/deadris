@@ -1,0 +1,323 @@
+#include<stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int i;
+int map[10][21] = {0};
+int horizontal = 10, vertical = 20;
+int tetblX [4];
+int tetblY[4];
+int blockcheck;
+
+void mapf();
+int randomf();
+void blockchecker();
+void mapchanger();
+void mapcleaner();
+
+int movechecker();
+
+void dodown();
+void doleft();
+void doright();
+/*
+void dotrunR();
+void dotrunL();
+*/
+void main()
+{
+	mapf();
+
+pointstart:
+	blockcheck = randomf();
+	blockchecker();
+	mapchanger();
+	mapf();
+choice:
+	switch (movechecker())
+	{
+	case 1:
+		doleft();
+		goto choice;
+	case 2:
+		dodown();
+		break;
+	case 3:
+		doright();
+		goto choice;
+	case 4:
+		//doturnL();
+		break;
+	case 5:
+		//doturnR();
+		break;
+	}
+	goto pointstart;
+	//줄 클리어 시키고
+	//넘었는지 체크하고
+	//위로 돌릴지 게임오버 시킬지 결정
+	
+}
+
+//맵 함수
+void mapf()
+{
+	for (vertical = 0; vertical < 20; vertical++)
+	{
+		for (horizontal = 0; horizontal < 10; horizontal++)
+		{
+			if (map[horizontal][vertical] == 0)
+			{
+				printf("□");
+			}
+			else if (map[horizontal][vertical] == 1)
+			{
+				printf("■");
+			}
+			else if (map[horizontal][vertical] == 2)
+			{
+				printf("◆");
+			}
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+
+//테트리스 블럭
+int randomf()
+{
+	srand(time(NULL));
+	int random = 0;
+	random = rand() % 7;
+	//printf("%d\n",random);
+	return random;
+	
+}
+
+void blockchecker()
+{
+	switch(blockcheck)
+	{
+		case 0:
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 0;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		case 1:
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 3;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 0;
+			break;
+		case 2:
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 1;
+			break;
+		case 3:
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 1;
+			break;
+		case 4:
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 1;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		case 5:
+			tetblX[0] = 1;
+			tetblX[1] = 2;
+			tetblX[2] = 0;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		case 6:
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 1;
+			break;
+	}
+
+}
+
+void mapchanger()
+{
+	if ((map[tetblX[0]][tetblY[0]] == 0) && (map[tetblX[1]][tetblY[1]] == 0) && (map[tetblX[2]][tetblY[2]] == 0) && (map[tetblX[3]][tetblY[3]] == 0))
+	{
+		map[tetblX[0]][tetblY[0]] = 2;
+		map[tetblX[1]][tetblY[1]] = 2;
+		map[tetblX[2]][tetblY[2]] = 2;
+		map[tetblX[3]][tetblY[3]] = 2;
+	}
+}
+
+void mapcleaner()
+{
+	for (vertical = 0; vertical < 20; vertical++)
+	{
+		for (horizontal = 0; horizontal < 10; horizontal++)
+		{
+			if (map[horizontal][vertical] == 2)
+			{
+				map[horizontal][vertical] = 0;
+			}
+		}
+	}
+}
+
+//입력 함수
+int movechecker()
+{
+	char mchecker;
+	retry:
+	printf("asd qe\n");
+	scanf_s("\n%c", &mchecker);
+	if (mchecker == 'a')
+	{
+		return 1;
+	}
+	else if (mchecker == 's')
+	{
+		return 2;
+	}
+	else if (mchecker == 'd')
+	{
+		return 3;
+	}
+	else if (mchecker == 'q')
+	{
+		return 4;
+	}
+	else if (mchecker == 'e')
+	{
+		return 5;
+	}
+	else
+	{
+		printf("다른 값을 입력하여 주십시오\n");
+		goto retry;
+	}
+}
+
+
+
+
+
+
+//움직일때 맵클로 2 지우고 테트블 움직이고 그다음 mapf로 표현하기
+
+
+//움직임 명령
+void dodown()
+{
+	downpoint:
+	if ((map[tetblX[1]][tetblY[1] + 1] != 1)&& (map[tetblX[2]][tetblY[2] + 1] != 1)&& (map[tetblX[3]][tetblY[3] + 1] != 1)&& (map[tetblX[0]][tetblY[0] + 1] != 1) && (tetblY[0]<19) && (tetblY[1] < 19) && (tetblY[2] < 19) && (tetblY[3] < 19))
+	{
+		for (i = 0; i < 4; i++)
+		{
+			tetblY[i] += 1;
+		}
+		mapcleaner();
+		mapchanger();
+		goto downpoint;
+	}
+	else
+	{
+		for (vertical = 0; vertical < 20; vertical++)
+		{
+			for (horizontal = 0; horizontal < 10; horizontal++)
+			{
+				if (map[horizontal][vertical] == 2)
+				{
+					map[horizontal][vertical] = 1;
+				}
+			}
+		}
+		mapf();
+	}
+}
+
+void doleft()
+{
+	if ((tetblX[0] > 0) && (tetblX[1] > 0) && (tetblX[2] > 0) && (tetblX[3] > 0))
+	{
+		mapcleaner();
+		for (i = 0; i < 4; i++)
+		{
+			tetblX[i]--;
+		}
+		mapchanger();
+		mapf();
+	}
+}
+
+
+void doright()
+{
+	if ((tetblX[0] < 9) && (tetblX[1] < 9) && (tetblX[2] < 9) && (tetblX[3] < 9))
+	{
+		mapcleaner();
+		for (i = 0; i < 4; i++)
+		{
+			tetblX[i]++;
+		}
+		mapchanger();
+		mapf();
+	}
+}
+
+
+
+//회전 너무 머리 아프네
+/*
+void doturnL()
+{
+
+}
+
+void dotrunR()
+{
+
+}
+*/
