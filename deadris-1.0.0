@@ -1,0 +1,567 @@
+#include<stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <Windows.h>
+#include <conio.h>
+
+int i;
+int map[10][21] = { 0 };
+int horizontal = 10, vertical = 20;
+int tetblX[4];
+int tetblY[4];
+int blockcheck;
+int movepoint = 0;
+int turncheck = 0;
+
+void mapf();
+int randomf();
+void blockchecker();
+void mapchanger();
+void mapcleaner();
+
+int movechecker();
+
+void dodown();
+void doleft();
+void doright();
+
+void doturnR();
+void doturnL();
+
+void lineclear();
+
+int gameover();
+
+//메인
+void main()
+{
+pointstart:
+	blockcheck = randomf();
+	blockchecker();
+	mapchanger();
+choice:
+	mapf();
+	switch (movechecker())
+	{
+	case 1:
+		doleft();
+		goto choice;
+	case 2:
+		dodown();
+		break;
+	case 3:
+		doright();
+		goto choice;
+	case 4:
+		doturnL();
+		goto choice;
+	case 5:
+		doturnR();
+		goto choice;
+	case 0:
+		goto choice;
+	}
+
+	lineclear();
+	if (gameover() == 0)
+	{
+		return;
+	}
+	goto pointstart;
+}
+
+//맵 함수
+void mapf()
+{
+	system("cls");
+	for (vertical = 0; vertical < 20; vertical++)
+	{
+		for (horizontal = 0; horizontal < 10; horizontal++)
+		{
+			if (map[horizontal][vertical] == 0)
+			{
+				printf("□");
+			}
+			else if (map[horizontal][vertical] == 1)
+			{
+				printf("■");
+			}
+			else if (map[horizontal][vertical] == 2)
+			{
+				printf("◆");
+			}
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+
+//테트리스 블럭
+int randomf()
+{
+	srand(time(NULL));
+	int random = 0;
+	random = rand() % 7;
+	//printf("%d\n",random);
+	return random;
+
+}
+
+void blockchecker()//회전값도 넣어야 한다
+{
+	switch (blockcheck)
+	{
+	case 0:
+		tetblX[0] = 0;
+		tetblX[1] = 1;
+		tetblX[2] = 0;
+		tetblX[3] = 1;
+
+		tetblY[0] = 0;
+		tetblY[1] = 0;
+		tetblY[2] = 1;
+		tetblY[3] = 1;
+		break;
+
+	case 1:
+		if (turncheck % 2 == 0)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 3;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 0;
+			break;
+		}
+		else if (turncheck % 2 == 1)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 0;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 2;
+			tetblY[3] = 3;
+			break;
+		}
+
+
+	case 2:
+		if (turncheck % 4 == 0)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 1)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 1;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+		else if (turncheck % 4 == 2)
+		{
+			tetblX[0] = 2;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 3)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 0;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 2;
+			tetblY[3] = 2;
+			break;
+		}
+
+	case 3:
+		if (turncheck % 4 == 0)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 1)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 1;
+			tetblX[2] = 0;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 2;
+			tetblY[3] = 2;
+			break;
+		}
+		else if (turncheck % 4 == 2)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 3)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 0;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+
+	case 4:
+		if (turncheck % 2 == 0)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 1;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 2 == 1)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+	case 5:
+		if (turncheck % 2 == 0)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 2;
+			tetblX[2] = 0;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 2 == 1)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+	case 6:
+		if (turncheck % 4 == 0)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 1)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+		else if (turncheck % 4 == 2)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 3)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+	}
+	if ((tetblX[0] + movepoint > 9) || (tetblX[1] + movepoint > 9) || (tetblX[2] + movepoint > 9) || (tetblX[3] + movepoint > 9))
+	{
+		movepoint--;
+		if ((tetblX[0] + movepoint > 9) || (tetblX[1] + movepoint > 9) || (tetblX[2] + movepoint > 9) || (tetblX[3] + movepoint > 9))
+		{
+			movepoint--;
+		}
+		if ((tetblX[0] + movepoint > 9) || (tetblX[1] + movepoint > 9) || (tetblX[2] + movepoint > 9) || (tetblX[3] + movepoint > 9))
+		{
+			movepoint--;
+		}
+	}
+}
+
+void mapchanger()
+{
+	if ((map[tetblX[0] + movepoint][tetblY[0]] == 0) && (map[tetblX[1] + movepoint][tetblY[1]] == 0) && (map[tetblX[2] + movepoint][tetblY[2]] == 0) && (map[tetblX[3] + movepoint][tetblY[3]] == 0))
+	{
+		map[tetblX[0] + movepoint][tetblY[0]] = 2;
+		map[tetblX[1] + movepoint][tetblY[1]] = 2;
+		map[tetblX[2] + movepoint][tetblY[2]] = 2;
+		map[tetblX[3] + movepoint][tetblY[3]] = 2;
+	}
+}
+
+void mapcleaner()
+{
+	for (vertical = 0; vertical < 20; vertical++)
+	{
+		for (horizontal = 0; horizontal < 10; horizontal++)
+		{
+			if (map[horizontal][vertical] == 2)
+			{
+				map[horizontal][vertical] = 0;
+			}
+		}
+	}
+}
+
+//입력 함수
+int movechecker()
+{
+	char mchecker;
+	printf("\n<- a  d->\nq 회전 e\ns ");
+	mchecker = _getch();
+	if (mchecker == 'a')
+	{
+		return 1;
+	}
+	else if (mchecker == 's')
+	{
+		return 2;
+	}
+	else if (mchecker == 'd')
+	{
+		return 3;
+	}
+	else if (mchecker == 'q')
+	{
+		return 4;
+	}
+	else if (mchecker == 'e')
+	{
+		return 5;
+	}
+	else
+	{
+		printf("\n다른 값을 입력하여 주십시오\n");
+		return 0;
+	}
+}
+
+//움직일때 맵클로 2 지우고 테트블 움직이고 그다음 mapf로 표현하기
+
+//움직임 명령
+void dodown()
+{
+downpoint:
+	if ((map[tetblX[1] + movepoint][tetblY[1] + 1] != 1) && (map[tetblX[2] + movepoint][tetblY[2] + 1] != 1) && (map[tetblX[3] + movepoint][tetblY[3] + 1] != 1) && (map[tetblX[0] + movepoint][tetblY[0] + 1] != 1) && (tetblY[0] < 19) && (tetblY[1] < 19) && (tetblY[2] < 19) && (tetblY[3] < 19))
+	{
+		for (i = 0; i < 4; i++)
+		{
+			tetblY[i] += 1;
+		}
+		mapcleaner();
+		mapchanger();
+		goto downpoint;
+	}
+	else
+	{
+		for (vertical = 0; vertical < 20; vertical++)
+		{
+			for (horizontal = 0; horizontal < 10; horizontal++)
+			{
+				if (map[horizontal][vertical] == 2)
+				{
+					map[horizontal][vertical] = 1;
+				}
+			}
+		}
+		movepoint = 0;
+		turncheck = 0;
+	}
+}
+
+void doleft()
+{
+	if (movepoint > 0)
+	{
+		mapcleaner();
+		movepoint--;
+		mapchanger();
+		mapf();
+	}
+}
+
+void doright()
+{
+	if ((tetblX[0] + movepoint < 9) && (tetblX[1] + movepoint < 9) && (tetblX[2] + movepoint < 9) && (tetblX[3] + movepoint < 9))
+	{
+		mapcleaner();
+		movepoint++;
+		mapchanger();
+		mapf();
+	}
+}
+
+//회전
+void doturnL()
+{
+	mapcleaner();
+	turncheck += 3;
+	blockchecker();
+	mapchanger();
+	mapf();
+}
+
+void doturnR()
+{
+	mapcleaner();
+	turncheck += 1;
+	blockchecker();
+	mapchanger();
+	mapf();
+}
+
+
+//라인 클리어
+void lineclear()
+{
+	int instant_Y_down;
+	int lineclearcheck = 0;
+	for (vertical = 19; vertical >= 0; vertical--)
+	{
+		for (horizontal = 0; horizontal < 10; horizontal++)
+		{
+			if (map[horizontal][vertical] == 1)
+			{
+				lineclearcheck++;
+			}
+		}
+		if (lineclearcheck == 10)
+		{
+			for (horizontal = 0; horizontal < 10; horizontal++)
+			{
+				map[horizontal][vertical] = 0;
+			}
+			instant_Y_down = vertical;
+			for (instant_Y_down; instant_Y_down > 0; instant_Y_down--)
+			{
+				for (horizontal = 0; horizontal < 10; horizontal++)
+				{
+					map[horizontal][instant_Y_down] = map[horizontal][instant_Y_down-1];
+				}
+			}
+			mapf();
+		}
+		lineclearcheck = 0;
+	}
+	printf("\n");
+}
+
+//게임오버 함수 
+int gameover()
+{
+	for (i = 0; i < 10; i++)
+	{
+		if (map[i][0]==1)
+		{
+			system("cls");
+			printf("게임오버");
+			return 0;
+		}
+		return 1;
+	}
+}
