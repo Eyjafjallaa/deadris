@@ -4,9 +4,9 @@
 #include <Windows.h>
 
 int i;
-int map[10][21] = {0};
+int map[10][21] = { 0 };
 int horizontal = 10, vertical = 20;
-int tetblX [4];
+int tetblX[4];
 int tetblY[4];
 int blockcheck;
 int movepoint = 0;
@@ -27,6 +27,8 @@ void doright();
 void doturnR();
 void doturnL();
 
+void lineclear();
+
 void main()
 {
 	mapf();
@@ -42,7 +44,7 @@ choice:
 	case 1:
 		doleft();
 		goto choice;
-	case 2:	
+	case 2:
 		dodown();
 		break;
 	case 3:
@@ -55,11 +57,12 @@ choice:
 		doturnR();
 		goto choice;
 	}
+
+	lineclear();
 	goto pointstart;
-	//줄 클리어 시키고
 	//넘었는지 체크하고
 	//위로 돌릴지 게임오버 시킬지 결정
-	
+
 }
 
 //맵 함수
@@ -97,16 +100,194 @@ int randomf()
 	random = rand() % 7;
 	//printf("%d\n",random);
 	return random;
-	
+
 }
 
 void blockchecker()//회전값도 넣어야 한다
 {
-	switch(blockcheck)
+	switch (blockcheck)
 	{
-		case 0: 
+	case 0:
+		tetblX[0] = 0;
+		tetblX[1] = 1;
+		tetblX[2] = 0;
+		tetblX[3] = 1;
+
+		tetblY[0] = 0;
+		tetblY[1] = 0;
+		tetblY[2] = 1;
+		tetblY[3] = 1;
+		break;
+
+	case 1:
+		if (turncheck % 2 == 0)
+		{
 			tetblX[0] = 0;
 			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 3;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 0;
+			break;
+		}
+		else if (turncheck % 2 == 1)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 0;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 2;
+			tetblY[3] = 3;
+			break;
+		}
+
+
+	case 2:
+		if (turncheck % 4 == 0)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 1)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 1;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+		else if (turncheck % 4 == 2)
+		{
+			tetblX[0] = 2;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 3)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 0;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 2;
+			tetblY[3] = 2;
+			break;
+		}
+
+	case 3:
+		if (turncheck % 4 == 0)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 1)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 1;
+			tetblX[2] = 0;
+			tetblX[3] = 1;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 2;
+			tetblY[3] = 2;
+			break;
+		}
+		else if (turncheck % 4 == 2)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 3)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 0;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+
+	case 4:
+		if (turncheck % 2 == 0)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 1;
+			tetblX[3] = 2;
+
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 2 == 1)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 0;
+
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+	case 5:
+		if (turncheck % 2 == 0)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 2;
 			tetblX[2] = 0;
 			tetblX[3] = 1;
 
@@ -115,251 +296,73 @@ void blockchecker()//회전값도 넣어야 한다
 			tetblY[2] = 1;
 			tetblY[3] = 1;
 			break;
+		}
+		else if (turncheck % 2 == 1)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 1;
 
-		case 1:
-			if (turncheck % 2 == 0)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 1;
-				tetblX[2] = 2;
-				tetblX[3] = 3;
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+	case 6:
+		if (turncheck % 4 == 0)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 1;
+			tetblX[2] = 2;
+			tetblX[3] = 1;
 
-				tetblY[0] = 0;
-				tetblY[1] = 0;
-				tetblY[2] = 0;
-				tetblY[3] = 0;
-				break;
-			}
-			else if (turncheck % 2 == 1)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 0;
-				tetblX[2] = 0;
-				tetblX[3] = 0;
+			tetblY[0] = 0;
+			tetblY[1] = 0;
+			tetblY[2] = 0;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 1)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 1;
 
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 2;
-				tetblY[3] = 3;
-				break;
-			}
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
+		else if (turncheck % 4 == 2)
+		{
+			tetblX[0] = 1;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 2;
 
-			
-		case 2:
-			if (turncheck % 4 == 0)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 1;
-				tetblX[2] = 2;
-				tetblX[3] = 0;
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 1;
+			break;
+		}
+		else if (turncheck % 4 == 3)
+		{
+			tetblX[0] = 0;
+			tetblX[1] = 0;
+			tetblX[2] = 1;
+			tetblX[3] = 0;
 
-				tetblY[0] = 0;
-				tetblY[1] = 0;
-				tetblY[2] = 0;
-				tetblY[3] = 1;
-				break;
-			}
-			else if (turncheck % 4 == 1)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 1;
-				tetblX[2] = 1;
-				tetblX[3] = 1;
-
-				tetblY[0] = 0;
-				tetblY[1] = 0;
-				tetblY[2] = 1;
-				tetblY[3] = 2;
-				break;
-			}
-			else if (turncheck % 4 == 2)
-			{
-				tetblX[0] = 2;
-				tetblX[1] = 0;
-				tetblX[2] = 1;
-				tetblX[3] = 2;
-
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 1;
-				tetblY[3] = 1;
-				break;
-			}
-			else if (turncheck % 4 == 3)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 0;
-				tetblX[2] = 0;
-				tetblX[3] = 1;
-
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 2;
-				tetblY[3] = 2;
-				break;
-			}
-
-		case 3:
-			if (turncheck % 4 == 0)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 1;
-				tetblX[2] = 2;
-				tetblX[3] = 2;
-
-				tetblY[0] = 0;
-				tetblY[1] = 0;
-				tetblY[2] = 0;
-				tetblY[3] = 1;
-				break;
-			}
-			else if (turncheck % 4 == 1)
-			{
-				tetblX[0] = 1;
-				tetblX[1] = 1;
-				tetblX[2] = 0;
-				tetblX[3] = 1;
-
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 2;
-				tetblY[3] = 2;
-				break;
-			}
-			else if (turncheck % 4 == 2)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 0;
-				tetblX[2] = 1;
-				tetblX[3] = 2;
-
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 1;
-				tetblY[3] = 1;
-				break;
-			}
-			else if (turncheck % 4 == 3)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 1;
-				tetblX[2] = 0;
-				tetblX[3] = 0;
-
-				tetblY[0] = 0;
-				tetblY[1] = 0;
-				tetblY[2] = 1;
-				tetblY[3] = 2;
-				break;
-			}
-
-		case 4:
-			if (turncheck % 4 == 0)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 1;
-				tetblX[2] = 1;
-				tetblX[3] = 2;
-
-				tetblY[0] = 0;
-				tetblY[1] = 0;
-				tetblY[2] = 1;
-				tetblY[3] = 1;
-				break;
-			}
-			else if (turncheck % 4 == 1)
-			{
-				tetblX[0] = 1;
-				tetblX[1] = 0;
-				tetblX[2] = 1;
-				tetblX[3] = 0;
-
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 1;
-				tetblY[3] = 2;
-				break;
-			}
-		case 5:
-			if (turncheck % 2 == 0)
-			{
-				tetblX[0] = 1;
-				tetblX[1] = 2;
-				tetblX[2] = 0;
-				tetblX[3] = 1;
-
-				tetblY[0] = 0;
-				tetblY[1] = 0;
-				tetblY[2] = 1;
-				tetblY[3] = 1;
-				break;
-			}
-			else if (turncheck % 2 == 1)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 0;
-				tetblX[2] = 1;
-				tetblX[3] = 1;
-
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 1;
-				tetblY[3] = 2;
-				break;
-			}
-		case 6:
-			if (turncheck % 4 == 0)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 1;
-				tetblX[2] = 2;
-				tetblX[3] = 1;
-
-				tetblY[0] = 0;
-				tetblY[1] = 0;
-				tetblY[2] = 0;
-				tetblY[3] = 1;
-				break;
-			}
-			else if (turncheck % 4 == 1)
-			{
-				tetblX[0] = 1;
-				tetblX[1] = 0;
-				tetblX[2] = 1;
-				tetblX[3] = 1;
-
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 1;
-				tetblY[3] = 2;
-				break;
-			}
-			else if (turncheck % 4 == 2)
-			{
-				tetblX[0] = 1;
-				tetblX[1] = 0;
-				tetblX[2] = 1;
-				tetblX[3] = 2;
-
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 1;
-				tetblY[3] = 1;
-				break;
-			}
-			else if (turncheck % 4 == 3)
-			{
-				tetblX[0] = 0;
-				tetblX[1] = 0;
-				tetblX[2] = 1;
-				tetblX[3] = 0;
-
-				tetblY[0] = 0;
-				tetblY[1] = 1;
-				tetblY[2] = 1;
-				tetblY[3] = 2;
-				break;
-			}
+			tetblY[0] = 0;
+			tetblY[1] = 1;
+			tetblY[2] = 1;
+			tetblY[3] = 2;
+			break;
+		}
 	}
 	if ((tetblX[0] + movepoint > 9) || (tetblX[1] + movepoint > 9) || (tetblX[2] + movepoint > 9) || (tetblX[3] + movepoint > 9))
 	{
@@ -404,7 +407,7 @@ void mapcleaner()
 int movechecker()
 {
 	char mchecker;
-	retry:
+retry:
 	printf("asd qe\n");
 	scanf_s("\n%c", &mchecker);
 	if (mchecker == 'a')
@@ -435,17 +438,12 @@ int movechecker()
 }
 
 
-
-
-
-
 //움직일때 맵클로 2 지우고 테트블 움직이고 그다음 mapf로 표현하기
-
 
 //움직임 명령
 void dodown()
 {
-	downpoint:
+downpoint:
 	if ((map[tetblX[1] + movepoint][tetblY[1] + 1] != 1) && (map[tetblX[2] + movepoint][tetblY[2] + 1] != 1) && (map[tetblX[3] + movepoint][tetblY[3] + 1] != 1) && (map[tetblX[0] + movepoint][tetblY[0] + 1] != 1) && (tetblY[0] < 19) && (tetblY[1] < 19) && (tetblY[2] < 19) && (tetblY[3] < 19))
 	{
 		for (i = 0; i < 4; i++)
@@ -484,7 +482,6 @@ void doleft()
 	}
 }
 
-
 void doright()
 {
 	if ((tetblX[0] + movepoint < 9) && (tetblX[1] + movepoint < 9) && (tetblX[2] + movepoint < 9) && (tetblX[3] + movepoint < 9))
@@ -495,7 +492,6 @@ void doright()
 		mapf();
 	}
 }
-
 
 
 //회전
@@ -518,3 +514,36 @@ void doturnR()
 	mapf();
 }
 
+void lineclear()
+{
+	int instant_Y_down;
+	int lineclearcheck = 0;
+	for (vertical = 19; vertical >= 0; vertical--)
+	{
+		for (horizontal = 0; horizontal < 10; horizontal++)
+		{
+			if (map[horizontal][vertical] == 1)
+			{
+				lineclearcheck++;
+			}
+		}
+		if (lineclearcheck == 10)
+		{
+			for (horizontal = 0; horizontal < 10; horizontal++)
+			{
+				map[horizontal][vertical] = 0;
+			}
+			instant_Y_down = vertical;
+			for (instant_Y_down; instant_Y_down > 0; instant_Y_down--)
+			{
+				for (horizontal = 0; horizontal < 10; horizontal++)
+				{
+					map[horizontal][instant_Y_down] = map[horizontal][instant_Y_down-1];
+				}
+			}
+			mapf();
+		}
+		lineclearcheck = 0;
+	}
+	printf("\n");
+}
