@@ -29,10 +29,11 @@ void doturnL();
 
 void lineclear();
 
+int gameover();
+
+//메인
 void main()
 {
-	mapf();
-
 pointstart:
 	blockcheck = randomf();
 	blockchecker();
@@ -59,8 +60,11 @@ choice:
 	}
 
 	lineclear();
+	if (gameover() == 0)
+	{
+		return 0;
+	}
 	goto pointstart;
-	//넘었는지 체크하고
 	//위로 돌릴지 게임오버 시킬지 결정
 
 }
@@ -437,7 +441,6 @@ retry:
 	}
 }
 
-
 //움직일때 맵클로 2 지우고 테트블 움직이고 그다음 mapf로 표현하기
 
 //움직임 명령
@@ -495,7 +498,6 @@ void doright()
 
 
 //회전
-
 void doturnL()
 {
 	mapcleaner();
@@ -514,6 +516,8 @@ void doturnR()
 	mapf();
 }
 
+
+//라인 클리어
 void lineclear()
 {
 	int instant_Y_down;
@@ -546,4 +550,18 @@ void lineclear()
 		lineclearcheck = 0;
 	}
 	printf("\n");
+}
+
+//게임오버 함수 
+//미완
+//조건만 만들면 끝남
+int gameover()
+{
+	if (1==2)
+	{
+		system("cls");
+		printf("게임오버");
+		return 0;
+	}
+	return 1;
 }
